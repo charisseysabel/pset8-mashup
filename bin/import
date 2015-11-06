@@ -1,6 +1,54 @@
 #!/usr/bin/env php
 <?php
 
-    // TODO
+    require("../includes/config.php");
+    
+    // global variables
+    $file = "US.txt";
+    
+    
+    // ensure that US.txt exists and readable
+    if((!file_exists($file)) && (!is_readable($file)) )
+    {
+        exit("File does not exist and/or unreadable.\n");
+    }
+    
+    // open US.txt file; ensure its successfully opened
+    if(($handle = fopen($file, "r")) !== false)
+    {   // iterate through each line until eof is not reached
+        while(($data = fgetcsv($handle, 100, "\t")) !== false )
+        {
+            $num = count($data);
+            print_r(array_values($data) );
+            $import =query("INSERT INTO places (country_code, postal_code, place_name, admin_name1, admin_code1,
+            	admin_name2, admin_code2, admin_name3, admin_code3, latitude, longitude) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )",
+            	$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], $data[7], $data[8], $data[9], $data[10]  );
+            if($import === false)
+            {
+            	exit("Import failed\n");
+            }
+
+            
+        }
+    }
+    else
+    {
+    	exit("Could not open file.\n");
+    }
+    
+    
+    // don't forget to close
+    fclose($handle);
 
 ?>
+
+
+
+
+
+
+
+
+
+
+

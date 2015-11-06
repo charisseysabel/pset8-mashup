@@ -1,0 +1,69 @@
+/*
+*	questions.txt
+*	Functions and other stuff recommended in the problem set 8
+*	that I had to do a quick research
+*/
+
+
+1. FILE_EXISTS
+    - Checks whether a file or directory exists.
+    - syntax:
+        bool file_exists(string $filename)
+        - returns TRUE or FALSE
+2. IS_READABLE
+	- Tells whether a file exists and is readable
+	- syntax:
+		bool is_readable(string $filename)
+		- returns true or false 
+
+3. FOPEN
+	- Opens a file or URL
+	- syntax:
+		resource fopen(string $filename, string $mode[bool $use_include_path = false [resource $context] ] )
+		- fopen() binds a named resource, specified by filename, to a stream.
+		FILENAME
+		- if PHP has decided that filename specifies a local file, it will try to open a stream on that file.
+		You must ensure that the file access permissions allow access.
+		MODE
+		- specifies the type of access you require to the stream.
+		- r - reading only
+		- r+ - reading and writing
+		- w - writing
+		etc...
+		USE_INCLUDE_PATH
+		- can be set to 1 or TRUE if you want to search for the file in the include_path too
+4. FGETCSV
+	- Gets line from file pointer and parse for CSV fields
+	- syntax:
+		array fgetcsv(resource $handle[int $length = 0 [string $delimiter = ","]
+		[string $enclosure = '"' [string $escape = "\"] ] ] )
+	- RETURNS AN ARRAY.
+	HANDLE
+	- a valid file pointer to a file successfully opened by fopen(), popen(), or fsockopen()
+	LENGTH
+	- must be greater than the longest line(in chars) to be found in the CSV file(allowing for trailing line-end chars)
+	DELIMITER
+	- optional; sets the one-char field delimiter
+	ENCLOSURE
+	- optional; sets the one-char field enclosure char
+	ESCAPE
+	- optional; sets the one-char escape char
+
+5. FCLOSE
+	- closes an open file pointer
+	syntax:
+		bool fclose(resource $handle)
+	HANDLE
+	- the file pointer must be valid and must point to a file successfully opened by fopen(), or fsockopen()
+	- returns true on success else, false.
+
+
+
+
+
+
+
+
+
+
+

@@ -72,7 +72,28 @@ $(function() {
  */
 function addMarker(place)
 {
-    // TODO
+
+    markers = place;
+    
+    // customize the icon
+    var image = "https://maps.google.com/mapfiles/kml/pal2/icon31.png";
+    
+    // create a marker
+    var myLatLng = new google.maps.LatLng(parseFloat(markers.latitude), parseFloat(markers.longitude));
+    
+    var marker = new MarkerWithLabel({
+        position: myLatLng,
+        map: map,
+        labelContent: markers.place_name + ", " + markers.admin_code1,
+        labelClass: "label",
+        labelInBackground: false,
+        icon: image
+    });
+    
+    marker.addListener('click', function() {
+        info.open(map, marker);
+    });
+
 }
 
 /**
@@ -106,7 +127,7 @@ function configure()
         source: search,
         templates: {
             empty: "no places found yet",
-            suggestion: _.template("<p>TODO</p>")
+            suggestion: _.template("<p><%- place_name%>, <%- admin_name1%>, <%- postal_code%> </p>")
         }
     });
 
@@ -157,7 +178,11 @@ function hideInfo()
  */
 function removeMarkers()
 {
-    // TODO
+    for(var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+      markers[i] = null;  
+    };
+
 }
 
 /**

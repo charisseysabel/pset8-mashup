@@ -7,6 +7,7 @@
  * Global JavaScript.
  */
 
+
 // Google Map
 var map;
 
@@ -73,25 +74,54 @@ $(function() {
 function addMarker(place)
 {
 
-    markers = place;
-    
-    // customize the icon
-    var image = "https://maps.google.com/mapfiles/kml/pal2/icon31.png";
+    //markers = place;
     
     // create a marker
-    var myLatLng = new google.maps.LatLng(parseFloat(markers.latitude), parseFloat(markers.longitude));
-    
+    var myLatLng = new google.maps.LatLng(parseFloat(place.latitude), parseFloat(place.longitude));
     var marker = new MarkerWithLabel({
         position: myLatLng,
         map: map,
-        labelContent: markers.place_name + ", " + markers.admin_code1,
+        labelContent: place.place_name + ", " + place.admin_code1,
         labelClass: "label",
         labelInBackground: false,
-        icon: image
+        icon: "https://maps.google.com/mapfiles/kml/pal2/icon31.png"
+    });
+    markers.push(marker);
+    
+    var articles = "<ul>";
+    var template = _.template("<li> <a href= '<%- link %>' target = '_blank'><%- title %> </a></li>");
+    
+    // parse articles.php
+    $.getJSON("articles.php", "geo=" + place.postal_code)
+    .done(function(data, textStatus, jqXHR) {
+        if(data.length == 0)
+        {
+            articles = "No news today";
+        }
+        else if(data.length > 0)
+        {
+            for(var i = 0; i < data.length; i++)
+            {
+                articles += template ({
+                    link: data[i].link,
+                    title: data[i].title
+                });                
+            }
+        }
+        
+        articles += "</ul>";
+
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+
+        // log error to browser's console
+        console.log(errorThrown.toString());
     });
     
+    
+    // add a listener function
     marker.addListener('click', function() {
-        info.open(map, marker);
+        showInfo(marker, articles);
     });
 
 }
@@ -178,12 +208,24 @@ function hideInfo()
  */
 function removeMarkers()
 {
-    for(var i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
-      markers[i] = null;  
-    };
-
+    hideInfo();
+    for(var h = 0, mkrSize = markers.length; h < mkrSize; h++)
+    {
+        markers[h].setMap(null);
+    }
 }
+
+/**
+ *  Shows markers button
+ */
+function showMarkers()
+{
+    for(var h = 0, mkrSize = markers.length; h < mkrSize; h++)
+    {
+        markers[h].setMap(map);
+    }
+}
+
 
 /**
  * Searches database for typeahead's suggestions.
@@ -268,3 +310,5 @@ function update()
          console.log(errorThrown.toString());
      });
 };
+
+

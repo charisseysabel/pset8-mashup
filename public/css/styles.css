@@ -93,7 +93,7 @@ html, body, #map-canvas, .container-fluid
     margin: 0;
 }
 
-/* floating panel styles*/
+/* floating panel styles
 #floating-panel {
     position: absolute;
     top: 10px;
@@ -106,7 +106,12 @@ html, body, #map-canvas, .container-fluid
     line-height: 30px;
     padding-left: 10px;
 }
+*/
 
+input {
+    padding: 5px;
+
+}
 
 
 
